@@ -1,15 +1,20 @@
 #!/bin/sh
 
 apt() {
+	if [ $# -eq 0 ]; then
+		apt help
+		return 0
+	fi
 	local bin
 	local a1="$1"; shift
 	case "$a1" in
 		help|--help)
-			echo "Usage: $0 <cmd>"
+			echo "Usage: $0 <action> ..."
+			echo "Actions:"
 			echo "  u         = update"
 			echo "  uup       = update & upgrade"
 			echo "  up        = upgrade"
-			echo "  dl        = update & upgrade -dy (download only)"
+			echo "  dl        = download only (like update & upgrade -dy)"
 			echo "  s[earch]  = search package name or debtags"
 			echo "  p[olicy]  = show the package policy info"
 			echo "  inst[all] = install"
