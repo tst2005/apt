@@ -2,8 +2,21 @@
 
 apt() {
 	local bin
-	local a1="$1" ; shift
+	local a1="$1"; shift
 	case "$a1" in
+		help|--help)
+			echo "Usage: $0 <cmd>"
+			echo "  u         = update"
+			echo "  uup       = update & upgrade"
+			echo "  up        = upgrade"
+			echo "  dl        = update & upgrade -dy (download only)"
+			echo "  s[earch]  = search package name or debtags"
+			echo "  p[olicy]  = show the package policy info"
+			echo "  inst[all] = install"
+			echo "  reinstall = reinstall"
+			echo "  purge     = purge"
+			return 0
+		;;
 		search) bin="s" ;;
 		show)	bin="c" ;;
 		p|po|pol|poli|polic|policy|polici|policie|policies) bin="c" ; a1="policy" ;;
@@ -16,11 +29,9 @@ apt() {
 		reinstall|reinst)	bin=g ; a1=install ; opt=--reinstall ;;
 		update|upgrade|dist-upgrade|install|remove)	bin=g ;;
 		*)
-			echo "Usage: $0 uup|up|dl"
-			echo "uup = update+upgrade"
-			echo "up = upgrade"
-			echo "dl = update+download"
+			apt >&2 help 
 			return 1
+		;;
 	esac
 	case "$bin" in
 		s)
