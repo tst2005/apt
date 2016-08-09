@@ -1,0 +1,39 @@
+#!/bin/sh
+
+apt() {
+	local bin
+	local a1="$1" ; shift
+	case "$a1" in
+		search) bin="s" ;;
+		show)	bin="c" ;;
+		p|po|pol|poli|polic|policy|polici|policie|policies) bin="c" ; a1="policy" ;;
+		u)		apt-get update "$@" ; return $? ;;
+		uup)		apt-get update && apt-get upgrade "$@" ; return $? ;;
+		up)		apt-get upgrade "$@" ; return $? ;;
+		dl)		apt-get update && apt-get upgrade -dy ; return $? ;;
+		purge)		bin=g ; a1=remove  ; opt=--purge ;;
+		inst|install)	apt-get install "$@"; return $? ;;
+		reinstall|reinst)	bin=g ; a1=install ; opt=--reinstall ;;
+		update|upgrade|dist-upgrade|install|remove)	bin=g ;;
+		*)
+			echo "Usage: $0 uup|up|dl"
+			echo "uup = update+upgrade"
+			echo "up = upgrade"
+			echo "dl = update+download"
+			return 1
+	esac
+	case "$bin" in
+		s)
+			if printf %s "$*" | grep -q '::'; then
+				debtags search "$*"
+			else
+				apt-cache search "$@"
+			fi
+		;;
+		g) apt-get   "$a1" $opt "$@" ;;
+		c) apt-cache "$a1" $opt "$@" ;;
+		*) echo "ERROR" ; exit 1
+	esac
+}
+
+apt "$@"
