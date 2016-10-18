@@ -27,7 +27,6 @@ before, after.
 + apt install       pkg1
 + apt inst          pkg1
 
-
 - apt-cache search pattern1
 + apt search       pattern1
 + apt s            pattern1
@@ -48,5 +47,14 @@ before, after.
 
 - apt-get install --reinstall pkg1
 + apt reinstall    pkg1
+
+- apt-mark hold    pkg1
++ apt hold         pkg1
+
+- apt-mark showhold
++ apt hold
+
+- apt-mark unhold  pkg1
++ apt unhold       pkg1
 
 ```
